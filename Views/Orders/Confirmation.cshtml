@@ -1,0 +1,38 @@
+@model EcommerceMvcStore.Models.Ecommerce.Order
+@using EcommerceMvcStore.Services
+@{
+    ViewData["Title"] = "Order Confirmation";
+    var statusClass = Model.Status.ToLowerInvariant() switch
+    {
+        "pending" => "status-pending",
+        "processing" => "status-processing",
+        "shipped" => "status-shipped",
+        "delivered" => "status-delivered",
+        "cancelled" => "status-cancelled",
+        _ => "status-pending"
+    };
+    var paymentClass = Model.PaymentStatus.ToLowerInvariant() switch
+    {
+        "paid" => "status-delivered",
+        "failed" => "status-cancelled",
+        _ => "status-pending"
+    };
+    var paymentLabel = Model.PaymentMethod == PaymentService.CashOnDelivery
+        ? "Cash on Delivery"
+        : "Demo Card Payment";
+}
+
+<div class="alert alert-success">
+    <h4>Order Placed Successfully!</h4>
+    <p>Your order number is <strong>#@Model.Id</strong>.</p>
+</div>
+
+<p>Order Status: <span class="status-badge @statusClass">@Model.Status</span></p>
+<p>Payment Method: <strong>@paymentLabel</strong></p>
+<p>Payment Status: <span class="status-badge @paymentClass">@Model.PaymentStatus</span></p>
+@if (!string.IsNullOrWhiteSpace(Model.TransactionId))
+{
+    <p>Transaction ID: <strong>@Model.TransactionId</strong></p>
+}
+<p>Total: <strong>$@Model.TotalAmount</strong></p>
+<a asp-action="MyOrders" class="btn btn-primary">View My Orders</a>

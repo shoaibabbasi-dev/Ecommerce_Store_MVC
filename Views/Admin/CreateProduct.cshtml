@@ -1,0 +1,16 @@
+@model EcommerceMvcStore.Models.Ecommerce.Product
+@{
+    ViewData["Title"] = "Create Product";
+}
+
+<h2>Create Product</h2>
+<form method="post">
+    @Html.AntiForgeryToken()
+    <partial name="_ProductForm" model="Model" />
+    <button class="btn btn-success">Save</button>
+    <a asp-action="Products" class="btn btn-secondary">Cancel</a>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

@@ -1,0 +1,80 @@
+@model IEnumerable<EcommerceMvcStore.Models.Ecommerce.Order>
+@using EcommerceMvcStore.Services
+@{
+    ViewData["Title"] = "Manage Orders";
+    string GetStatusClass(string status) => status.ToLowerInvariant() switch
+    {
+        "pending" => "status-pending",
+        "processing" => "status-processing",
+        "shipped" => "status-shipped",
+        "delivered" => "status-delivered",
+        "cancelled" => "status-cancelled",
+        _ => "status-pending"
+    };
+    string GetPaymentClass(string status) => status.ToLowerInvariant() switch
+    {
+        "paid" => "status-delivered",
+        "failed" => "status-cancelled",
+        _ => "status-pending"
+    };
+    string GetPaymentLabel(string method) => method == PaymentService.CashOnDelivery
+        ? "Cash on Delivery"
+        : "Demo Card";
+    string[] statuses = ["Pending", "Processing", "Shipped", "Delivered", "Cancelled"];
+}
+
+<section class="admin-hero mb-4">
+    <div>
+        <h2 class="mb-1">Order Management</h2>
+        <p class="mb-0">Update order fulfillment status for customer orders.</p>
+    </div>
+</section>
+
+<div class="admin-panel">
+    <table class="table table-striped align-middle">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Customer</th>
+                <th>Email</th>
+                <th>Date</th>
+                <th>Total</th>
+                <th>Payment</th>
+                <th>Status</th>
+                <th>Update</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var order in Model)
+            {
+                <tr>
+                    <td>@order.Id</td>
+                    <td>@order.CustomerName</td>
+                    <td>@order.Email</td>
+                    <td>@order.CreatedAtUtc.ToLocalTime()</td>
+                    <td>$@order.TotalAmount</td>
+                    <td>
+                        <div class="small">@GetPaymentLabel(order.PaymentMethod)</div>
+                        <span class="status-badge @GetPaymentClass(order.PaymentStatus)">@order.PaymentStatus</span>
+                    </td>
+                    <td>
+                        <span class="status-badge @GetStatusClass(order.Status)">@order.Status</span>
+                    </td>
+                    <td>
+                        <form asp-action="UpdateOrderStatus" method="post" class="d-flex gap-2">
+                            @Html.AntiForgeryToken()
+                            <input type="hidden" name="id" value="@order.Id" />
+                            <select name="status" class="form-select form-select-sm">
+                                @foreach (var s in statuses)
+                                {
+                                    <option value="@s" selected="@(order.Status == s)">@s</option>
+                                }
+                            </select>
+                            <button class="btn btn-sm btn-outline-primary">Save</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

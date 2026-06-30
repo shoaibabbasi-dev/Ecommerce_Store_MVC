@@ -1,0 +1,28 @@
+@model EcommerceMvcStore.Models.Ecommerce.Product
+@{
+    ViewData["Title"] = "Product Details";
+}
+
+<div class="row">
+    <div class="col-md-5">
+        <img src="@Model.ImageUrl" class="img-fluid rounded" alt="@Model.Name" />
+    </div>
+    <div class="col-md-7">
+        <h2>@Model.Name</h2>
+        <p class="text-muted">@Model.Category?.Name</p>
+        <p>@Model.Description</p>
+        <h4 class="text-success">$@Model.Price</h4>
+        <p>In Stock: @Model.StockQuantity</p>
+
+        <form asp-controller="Cart" asp-action="Add" method="post" class="row g-2">
+            @Html.AntiForgeryToken()
+            <input type="hidden" name="productId" value="@Model.Id" />
+            <div class="col-md-3">
+                <input type="number" name="quantity" class="form-control" min="1" value="1" />
+            </div>
+            <div class="col-md-4">
+                <button class="btn btn-primary">Add To Cart</button>
+            </div>
+        </form>
+    </div>
+</div>

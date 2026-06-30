@@ -1,0 +1,17 @@
+@model EcommerceMvcStore.Models.Ecommerce.Product
+@{
+    ViewData["Title"] = "Edit Product";
+}
+
+<h2>Edit Product</h2>
+<form method="post">
+    @Html.AntiForgeryToken()
+    <input type="hidden" asp-for="Id" />
+    <partial name="_ProductForm" model="Model" />
+    <button class="btn btn-primary">Update</button>
+    <a asp-action="Products" class="btn btn-secondary">Cancel</a>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

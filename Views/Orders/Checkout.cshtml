@@ -1,0 +1,89 @@
+@model EcommerceMvcStore.ViewModels.CheckoutViewModel
+@using EcommerceMvcStore.Services
+@{
+    ViewData["Title"] = "Checkout";
+}
+
+<h2>Checkout & Payment</h2>
+
+<div class="row">
+    <div class="col-md-7">
+        <div class="panel">
+            <form method="post" id="checkoutForm">
+                @Html.AntiForgeryToken()
+                <div asp-validation-summary="ModelOnly" class="text-danger mb-2"></div>
+
+                <h5 class="mb-3">Shipping Details</h5>
+                <div class="mb-3">
+                    <label asp-for="CustomerName" class="form-label"></label>
+                    <input asp-for="CustomerName" class="form-control" />
+                    <span asp-validation-for="CustomerName" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="Email" class="form-label"></label>
+                    <input asp-for="Email" class="form-control" />
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="ShippingAddress" class="form-label"></label>
+                    <textarea asp-for="ShippingAddress" class="form-control"></textarea>
+                    <span asp-validation-for="ShippingAddress" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="PhoneNumber" class="form-label"></label>
+                    <input asp-for="PhoneNumber" class="form-control" />
+                    <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                </div>
+
+                <h5 class="mb-3">Payment (Free Demo Gateway)</h5>
+                <div class="mb-3">
+                    <label asp-for="PaymentMethod" class="form-label"></label>
+                    <select asp-for="PaymentMethod" class="form-select" id="paymentMethod">
+                        <option value="@PaymentService.CashOnDelivery">Cash on Delivery</option>
+                        <option value="@PaymentService.MockCard">Demo Card Payment (No real charge)</option>
+                    </select>
+                </div>
+
+                <div id="cardFields" class="mb-3" style="display:none;">
+                    <label asp-for="CardNumber" class="form-label"></label>
+                    <input asp-for="CardNumber" class="form-control" placeholder="4242424242424242" maxlength="19" />
+                    <span asp-validation-for="CardNumber" class="text-danger"></span>
+                    <small class="text-muted">Use test card `4242424242424242`. Cards ending in `0000` are declined in demo mode.</small>
+                </div>
+
+                <button class="btn btn-success auth-submit">Pay & Place Order</button>
+            </form>
+        </div>
+    </div>
+    <div class="col-md-5">
+        <div class="panel">
+            <h5>Order Summary</h5>
+            <ul class="list-group mb-3">
+                @foreach (var item in Model.CartItems)
+                {
+                    <li class="list-group-item d-flex justify-content-between">
+                        <span>@item.Name x @item.Quantity</span>
+                        <span>$@item.LineTotal</span>
+                    </li>
+                }
+            </ul>
+            <h5>Total: $@Model.TotalAmount</h5>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        const paymentMethod = document.getElementById('paymentMethod');
+        const cardFields = document.getElementById('cardFields');
+
+        function toggleCardFields() {
+            const show = paymentMethod.value === '@PaymentService.MockCard';
+            cardFields.style.display = show ? 'block' : 'none';
+        }
+
+        paymentMethod.addEventListener('change', toggleCardFields);
+        toggleCardFields();
+    </script>
+}

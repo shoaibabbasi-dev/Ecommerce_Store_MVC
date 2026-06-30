@@ -1,0 +1,35 @@
+@model IEnumerable<EcommerceMvcStore.Models.Ecommerce.Product>
+@{
+    ViewData["Title"] = "Manage Products";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h2>Products</h2>
+    <a asp-action="CreateProduct" class="btn btn-success">Add Product</a>
+</div>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Category</th>
+            <th>Price</th>
+            <th>Stock</th>
+            <th>Status</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Name</td>
+                <td>@item.Category?.Name</td>
+                <td>$@item.Price</td>
+                <td>@item.StockQuantity</td>
+                <td>@(item.IsActive ? "Active" : "Inactive")</td>
+                <td><a asp-action="EditProduct" asp-route-id="@item.Id" class="btn btn-sm btn-outline-primary">Edit</a></td>
+            </tr>
+        }
+    </tbody>
+</table>
