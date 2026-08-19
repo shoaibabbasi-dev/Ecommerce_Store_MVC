@@ -1,4 +1,4 @@
-# 🛒 E-Commerce MVC Store
+<img width="1167" height="524" alt="image" src="https://github.com/user-attachments/assets/1c794ed1-de1a-4282-9e0c-81451c98a553" /># 🛒 E-Commerce MVC Store
 
 A full-stack **E-Commerce Web Application** built with **C# and ASP.NET Core MVC**, featuring product management, shopping cart functionality, user authentication, order processing, and a dedicated admin dashboard.
 
@@ -531,8 +531,6 @@ Potential improvements include:
 
 # 📸 Screenshots
 
-# 📸 Screenshots
-
 ## 🏠 Home Page
 
 <img width="1365" height="605" alt="Home Page" src="https://github.com/user-attachments/assets/97889f1a-4f10-435b-b703-b0d82f16be52" />
@@ -551,7 +549,8 @@ Potential improvements include:
 
 ## 📋 Order Management
 
-<img width="1167" height="504" alt="Order Management" src="https://github.com/user-attachments/assets/4ff909ce-d8ed-484b-b703-c694251b24a3" />
+<img width="1167" height="524" alt="image" src="https://github.com/user-attachments/assets/f28a4b3e-c457-4212-ae48-c2678be59659" />
+
 
 ---
 
